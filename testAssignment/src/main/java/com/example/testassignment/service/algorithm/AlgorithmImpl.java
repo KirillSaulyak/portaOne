@@ -12,25 +12,29 @@ public class AlgorithmImpl implements AlgorithmService {
     @Override
     public Character calculate(String userText) {
         String[] words = userText.split(" ");
-        StringBuilder uniqueCharacters = new StringBuilder();
+        Map<Character, Integer> uniqueCharacters = new LinkedHashMap<>();
         Character firstUniqueCharInWord;
         for (String word : words) {
-            firstUniqueCharInWord = findFirstUniqueCharInWord(word);
+            firstUniqueCharInWord = getFirstUniqueCharInWord(word.toCharArray());
             if (nonNull(firstUniqueCharInWord)) {
-                uniqueCharacters.append(firstUniqueCharInWord);
+                uniqueCharacters.put(firstUniqueCharInWord, uniqueCharacters.getOrDefault(firstUniqueCharInWord, 0) + 1);
             }
         }
-        return findFirstUniqueCharInWord(uniqueCharacters.toString());
+        return findFirstUniqueCharInMap(uniqueCharacters);
     }
 
-    private Character findFirstUniqueCharInWord(String word) {
-        if (word.length() == 1) {
-            return word.charAt(0);
+    private Character getFirstUniqueCharInWord(char[] word) {
+        if (word.length == 1) {
+            return word[0];
         }
         Map<Character, Integer> letters = new LinkedHashMap<>();
-        for (int i = 0; i < word.length(); i++) {
-            letters.put(word.charAt(i), letters.getOrDefault(word.charAt(i), 0) + 1);
+        for (char letter : word) {
+            letters.put(letter, letters.getOrDefault(letter, 0) + 1);
         }
+        return findFirstUniqueCharInMap(letters);
+    }
+
+    private Character findFirstUniqueCharInMap(Map<Character, Integer> letters) {
         for (var entry : letters.entrySet()) {
             if (entry.getValue() == 1) {
                 return entry.getKey();
