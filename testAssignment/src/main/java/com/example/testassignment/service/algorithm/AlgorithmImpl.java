@@ -2,6 +2,9 @@ package com.example.testassignment.service.algorithm;
 
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import static java.util.Objects.nonNull;
 
 @Service
@@ -24,9 +27,13 @@ public class AlgorithmImpl implements AlgorithmService {
         if (word.length() == 1) {
             return word.charAt(0);
         }
-        for (int i = 1; i < word.length(); i++) {
-            if (word.indexOf(word.charAt(i - 1), i) == -1) {
-                return word.charAt(i - 1);
+        Map<Character, Integer> letters = new LinkedHashMap<>();
+        for (int i = 0; i < word.length(); i++) {
+            letters.put(word.charAt(i), letters.getOrDefault(word.charAt(i), 0) + 1);
+        }
+        for (var entry : letters.entrySet()) {
+            if (entry.getValue() == 1) {
+                return entry.getKey();
             }
         }
         return null;
