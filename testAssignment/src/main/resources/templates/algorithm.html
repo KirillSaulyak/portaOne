@@ -23,10 +23,13 @@
                 </div>
             </div>
             <div class="row my-3">
-                <div class="col">
+                <div class="col" th:if="${uniqueCharacter} != null">
                     <p class="text-start">Unique character:
-                    <span th:if="${uniqueCharacter} != null" th:text="${uniqueCharacter}"></span>
+                    <span th:text="${uniqueCharacter}"></span>
                     </p>
+                </div>
+                <div class="col" th:if="${uniqueCharacter} == null">
+                    <p class="text-start bg-danger">There are not unique character</p>
                 </div>
             </div>
         </form>
